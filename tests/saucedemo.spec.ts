@@ -7,6 +7,7 @@ test.beforeEach(async ({ page }) => {
 test.describe('Landing Page', () => {
     test('should log in and log out', async ({ page }) => {
         await loginStandardUser(page);
+        
         await expect(page.getByTestId('title')).toHaveText('Products');
         await page.locator('.bm-burger-button').click();
         await page.getByTestId('logout-sidebar-link').click();
@@ -15,8 +16,69 @@ test.describe('Landing Page', () => {
 
     test('should not log in with invalid credentials', async ({ page }) => {
         await loginInvalidUser(page);
+
         await expect(page.getByTestId('error')).toBeVisible();
         await expect(page.getByTestId('error')).toContainText('Username and password do not match');
+    });
+});
+
+test.describe('Product Page', () => {
+    test('should have correct product count displayed', async ({ page }) => {
+        await loginStandardUser(page);
+
+        await expect(page.getByTestId('inventory-item')).toHaveCount(6);
+    });
+
+    test('should add and remove items from cart', async ({ page }) => {
+        await loginStandardUser(page);
+
+        // add items to cart
+        await page.getByTestId('add-to-cart-sauce-labs-backpack').click();
+        await expect(page.getByTestId('remove-sauce-labs-backpack')).toBeVisible();
+
+        await page.getByTestId('add-to-cart-sauce-labs-onesie').click();
+        await expect(page.getByTestId('remove-sauce-labs-onesie')).toBeVisible();
+
+        // assert cart item count
+        await expect(page.getByTestId('shopping-cart-badge')).toHaveText('2');
+
+        // remove items from cart
+        await page.getByTestId('remove-sauce-labs-backpack').click();
+        await expect(page.getByTestId('add-to-cart-sauce-labs-backpack')).toBeVisible();
+
+        await page.getByTestId('remove-sauce-labs-onesie').click();
+        await expect(page.getByTestId('add-to-cart-sauce-labs-onesie')).toBeVisible();
+
+        // assert cart item count
+        await expect(page.getByTestId('shopping-cart-badge')).toBeHidden();
+    });
+
+    test('should sort products', async ({ page }) => {
+        await loginStandardUser(page);
+
+        const products = page.getByTestId('inventory-item');
+        const sortProducts = page.getByTestId('product-sort-container');
+
+        // sort descending
+        await sortProducts.click();
+        await sortProducts.selectOption({ value: 'za' });
+        await expect(products.nth(0)).toContainText('Test.allTheThings() T-Shirt (Red)');
+        await expect(products.nth(5)).toContainText('Sauce Labs Backpack');
+
+        // sort price (low to high)
+        await sortProducts.click();
+        await sortProducts.selectOption({ value: 'lohi' });
+        await expect(products.nth(0)).toContainText('Sauce Labs Onesie');
+        await expect(products.nth(5)).toContainText('Sauce Labs Fleece Jacket');
+
+        // sort price (high to low)
+        await sortProducts.click();
+        await sortProducts.selectOption({ value: 'hilo'});
+        await expect(products.nth(0)).toContainText('Sauce Labs Fleece Jacket');
+        await expect(products.nth(5)).toContainText('Sauce Labs Onesie');
+
+
+        
     });
 });
 
