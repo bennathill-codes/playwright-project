@@ -17,6 +17,7 @@ test.describe('Landing Page', () => {
     test('should not log in with invalid credentials', async ({ page }) => {
         await loginInvalidUser(page);
 
+        // assert error banners
         await expect(page.getByTestId('error')).toBeVisible();
         await expect(page.getByTestId('error')).toContainText('Username and password do not match');
     });
@@ -78,7 +79,7 @@ test.describe('Product Page', () => {
     });
 });
 
-test.describe('Checkout Page', () => {
+test.describe('Shopping Cart Page', () => {
     test('should display products in cart', async ({ page }) => {
         await loginStandardUser(page);
 
@@ -104,6 +105,40 @@ test.describe('Checkout Page', () => {
 
         // assert cart is empty
         await expect(page.getByTestId('inventory-item')).toHaveCount(0);
+    });
+});
+
+test.describe('Checkout Workflow', () => {
+    test('should complete checkout', async ({ page }) => {
+        await loginStandardUser(page);
+
+        // add products to cart
+        await addProductToCart(page, 0);
+        await addProductToCart(page, 1);
+        await expect(page.getByTestId('shopping-cart-badge')).toHaveText('2');
+        
+        // navigate to checkout page
+        await page.getByTestId('shopping-cart-link').click();
+        await page.getByTestId('checkout').click();
+        await expect(page.getByTestId('title')).toContainText('Information');
+
+        // add user information for checkout
+        await page.getByTestId('firstName').fill('adc');
+        await page.getByTestId('lastName').fill('def');
+        await page.getByTestId('postalCode').fill('12345');
+        await page.getByTestId('continue').click();
+        await expect(page.getByTestId('title')).toContainText('Overview');
+
+        // assert checkout total has value
+        await expect(page.getByTestId('total-label')).not.toBeEmpty();
+
+        // navigate to complete checkout
+        await page.getByTestId('finish').click();
+        await expect(page.getByTestId('title')).toContainText('Complete');
+
+        // navigate back to products from complete page
+        await page.getByTestId('back-to-products').click();
+        await expect(page.getByTestId('title')).toHaveText('Products');
     });
 });
 
