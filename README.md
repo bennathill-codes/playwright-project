@@ -54,11 +54,12 @@ This command will run all tests defined in `saucedemo.spec.ts` using Playwright.
 
 - **`/tests`**: Contains test scripts.
   - **`saucedemo.spec.ts`**: Main test file for Saucedemo.
-- **`/pages`**: Contains POM files.
-  - **`loginPage.ts`**: Page Object for the Login page.
-  - **`productPage.ts`**: Page Object for the Product page.
-  - **`cartPage.ts`**: Page Object for the Shopping Cart page.
-  - **`checkoutPage.ts`**: Page Object for the Checkout Workflow.
+- **`/pom`**: Contains POM files.
+  - **`LoginPage.ts`**: Page Object for the Login page.
+  - **`ProductPage.ts`**: Page Object for the Product page.
+  - **`ShoppingCartPage.ts`**: Page Object for the Shopping Cart page.
+  - **`CheckoutPage.ts`**: Page Object for the Checkout page.
+  - **`ShippingOverviewPage.ts`**: Page Object for the Shipping Overview page.
     Each POM file includes page locators and helper methods that encapsulate page-specific functionality for easy and organized testing.
 
 ### Contributing
