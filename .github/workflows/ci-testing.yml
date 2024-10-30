@@ -33,9 +33,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Installs required Node.js dependencies
+      # Install required Node.js dependencies
       - name: Install Dependencies
         run: npm ci
+
+      # Install all browsers for tests to run against
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
 
       # Use Microsoft's official Playwright GitHub Action to set up dependencies
       - name: Set up Playwright
@@ -43,11 +47,11 @@ jobs:
         with:
           version: 1.48.1
 
-      # Runs Playwright tests
+      # Run Playwright tests
       - name: Run Playwright Tests
         run: npx playwright test --reporter=dot
 
-      # Uploads the Playwright report if tests fail to save storage space
+      # Upload the Playwright report if tests fail to save storage space
       - name: Upload Report on Failure
         if: failure()
         uses: actions/upload-artifact@v4
@@ -56,7 +60,7 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-      # Ensures the `node_modules` and Playwright report directories are cleaned up after tests
+      # Clean up the `node_modules` and Playwright report directories after tests
       - name: Cleanup after tests (Windows)
         if: runner.os == 'Windows'
         run: |
