@@ -31,8 +31,8 @@ Follow these steps to pull down the project, install dependencies, and run the t
 1. **Clone the repository**:
 
    ```bash
-   git clone <repository-url>
-   cd saucedemo-playwright-tests
+   git clone https://github.com/bennathill-codes/playwright-project.git
+   cd playwright-project/tests
    ```
 
 2. **Installing Dependencies**
