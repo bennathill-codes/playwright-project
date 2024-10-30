@@ -28,7 +28,9 @@ jobs:
 
         # Install all browsers for tests to run against
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: |
+          npx playwright install --with-deps
+          npx playwright install msedge
 
         # Run Playwright tests
       - name: Run Playwright tests
