@@ -60,6 +60,7 @@ This command will run all tests defined in `saucedemo.spec.ts` using Playwright.
   - **`ShoppingCartPage.ts`**: Page Object for the Shopping Cart page.
   - **`CheckoutPage.ts`**: Page Object for the Checkout page.
   - **`ShippingOverviewPage.ts`**: Page Object for the Shipping Overview page.
+
     Each POM file includes page locators and helper methods that encapsulate page-specific functionality for easy and organized testing.
 
 ### Contributing
