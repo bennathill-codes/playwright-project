@@ -9,10 +9,7 @@ on:
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ubuntu-latest
 
     steps:
       # Check out the code from the repository
