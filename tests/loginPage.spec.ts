@@ -20,6 +20,6 @@ test.describe('Log In Page', () => {
         
         await productPage.clickSideBarMenu();
         await productPage.clickLogOut()
-        await expect(productPage.loginLogo).toBeVisible();
+        await expect(loginPage.loginLogo).toBeVisible();
     });
 });

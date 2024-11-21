@@ -1,42 +1,37 @@
 import { test, expect } from './base';
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page, loginPage }) => {
     await page.goto('https://www.saucedemo.com/');
+    await loginPage.loginStandardUser();
   });
 
 test.describe('Product Page', () => {
-    test('should have correct product count displayed', async ({ loginPage, productPage }) => {
-        await loginPage.loginStandardUser();
-
+    test('should have products displayed', async ({ productPage }) => {
         await expect(productPage.inventoryItem).toHaveCount(6);
     });
 
-    test('should add and remove items from cart', async ({ loginPage, productPage }) => {
-        await loginPage.loginStandardUser();
-
-        // add items to cart
+    test('should add and remove products from cart', async ({ productPage }) => {
         await productPage.addProductToCart(0)
         await productPage.addProductToCart(4);
-
-        // assert cart item count
         await expect(productPage.shoppingCartBadge).toHaveText('2');
 
-        // remove items from cart
         await productPage.removeProductFromCart(0);
         await productPage.removeProductFromCart(4);
-
-        // assert cart item count
         await expect(productPage.shoppingCartBadge).toBeHidden();
     });
 
-    test('should sort products', async ({ loginPage, productPage }) => {
-        await loginPage.loginStandardUser();
-
+    test('should sort products', async ({ productPage }) => {
         // sort descending
         await productPage.clickSortDropdown();
         await productPage.selectSortDropdownOption('za');
         await productPage.validateProductName( 0, 'Test.allTheThings() T-Shirt (Red)');
         await productPage.validateProductName(5, 'Sauce Labs Backpack');
+
+        // sort ascending
+        await productPage.clickSortDropdown();
+        await productPage.selectSortDropdownOption('az');
+        await productPage.validateProductName(0, 'Sauce Labs Backpack');
+        await productPage.validateProductName( 5, 'Test.allTheThings() T-Shirt (Red)');
 
         // sort price (low to high)
         await productPage.clickSortDropdown();

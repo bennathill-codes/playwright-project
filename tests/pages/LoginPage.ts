@@ -5,8 +5,8 @@ export default class LoginPage {
     private readonly userNameField: Locator;
     private readonly passwordField: Locator;
     private readonly loginButton: Locator;
-    private readonly loginLogo: Locator;
     public readonly loginError: Locator;
+    public readonly loginLogo: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -17,18 +17,18 @@ export default class LoginPage {
         this.loginError = page.getByTestId('error');
     }
 
-    // navigate to login page
+    // login page helper methods
+
     async goto() {
         await this.page.goto('https://www.saucedemo.com/');
     }
 
-    // log in helper function
     async loginStandardUser() {
         await this.userNameField.fill('standard_user');
         await this.passwordField.fill('secret_sauce');
         await this.loginButton.click();
     }
-    // invalid log in helper function
+
     async loginInvalidUser() {
         await this.userNameField.fill('invalid_user');
         await this.passwordField.fill('invalid');

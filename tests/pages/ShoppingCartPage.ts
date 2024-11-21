@@ -17,22 +17,21 @@ export default class ShoppingCartPage {
         this.removeButton = page.locator('button', { hasText: 'Remove' }).first();
     }
 
-    // navigate back to products page from shopping cart
+
+    // shopping cart page helper methods
+    
     async clickContinueShoppingButton() {
         await this.continueShoppingButton.click();
     }
 
-    // navigate to checkout from shopping cart
     async clickCheckoutButton() {
         await this.checkoutButton.click();
     }
 
-    // remove product from cart page
     async clickRemoveButton() {
         await this.removeButton.click();
     }
 
-    // assert product name
     async validateProductName(itemPosition: number, productName: string) {
         await expect(this.inventoryItem.nth(itemPosition)).toContainText(productName);
     }
